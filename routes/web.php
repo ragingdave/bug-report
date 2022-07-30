@@ -14,5 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    Storage::disk('s3')->put('test.txt', 'Hey look! a private bug!', 'private');
+
+    return view('welcome', [
+        'link' => Storage::disk('s3')->temporaryUrl('test.txt', now()->addHour()),
+    ]);
 });
